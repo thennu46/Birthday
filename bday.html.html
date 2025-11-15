@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy Birthday Divya 🎉</title>
+  <style>
+    html,body{height:100%;margin:0;font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+    body{
+      background: radial-gradient(circle at 20% 20%, #fff7e6 0%, transparent 10%),
+                  linear-gradient(180deg,#ffe6f0 0%, #f0f8ff 100%);
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .stage{
+      position:relative;
+      width:min(980px,95%);
+      height:640px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.5));
+      border-radius:20px;
+      box-shadow:0 18px 40px rgba(20,30,60,0.12);
+      padding:36px;
+      box-sizing:border-box;
+      text-align:center;
+      overflow:hidden;
+    }
+    h1{
+      margin:18px 0 6px;
+      font-size:clamp(28px,5vw,56px);
+      color:#d81b60;
+      text-shadow:0 3px 12px rgba(216,27,96,0.12);
+    }
+    p{margin:0 0 22px;color:#444;font-size:18px}
+    /* balloons */
+    .balloon{
+      position:absolute;
+      bottom:-160px;
+      width:90px;
+      height:120px;
+      border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+      transform-origin:center bottom;
+      animation:rise linear infinite;
+      box-shadow:0 8px 18px rgba(0,0,0,0.12);
+    }
+    .balloon:after{
+      content:'';
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:-16px;
+      width:2px;height:20px;background:rgba(0,0,0,0.08);
+    }
+    @keyframes rise{
+      from{transform:translateY(0) rotate(0deg); opacity:1;}
+      to{transform:translateY(-950px) rotate(20deg); opacity:0.02;}
+    }
+    /* confetti pieces */
+    .confetti{
+      position:absolute;
+      top:-10px;
+      left:50%;
+      pointer-events:none;
+    }
+    .confetti .piece{
+      position:absolute;
+      width:10px;height:14px;
+      opacity:0.95;
+      transform-origin:center;
+      animation:fall 2.6s linear forwards;
+    }
+    @keyframes fall{
+      to{transform:translateY(820px) rotate(600deg); opacity:0.9;}
+    }
+    /* cake */
+    .cake{
+      display:inline-block;
+      margin-top:26px;
+      font-size:46px;
+    }
+    /* responsive */
+    @media (max-width:520px){
+      .stage{height:520px;padding:20px;}
+      .cake{font-size:38px}
+    }
+  </style>
+</head>
+<body>
+  <div class="stage" role="main" aria-label="Happy Birthday celebration for Divya">
+    <h1>Happy Birthday, Saniyaney! 🎉</h1>
+    <p>Hope your day sparkles as much as you do — here's to cake, friends, and a great year ahead.</p>
+
+    <div class="cake" aria-hidden="true">🍰 🕯</div>
+
+    <!-- Balloons (JS will position & color them) -->
+    <div id="balloons"></div>
+
+    <!-- Confetti container -->
+    <div class="confetti" id="confetti"></div>
+  </div>
+
+  <script>
+    // create balloons
+    const colors = ['#ff6b6b','#ffd93d','#6bcB77','#4d96ff','#c56bff','#ff8fb1'];
+    const stage = document.getElementById('balloons');
+    for(let i=0;i<8;i++){
+      const b = document.createElement('div');
+      b.className = 'balloon';
+      const size = 70 + Math.round(Math.random()*60);
+      b.style.width = size + 'px';
+      b.style.height = Math.round(size*1.25) + 'px';
+      b.style.left = (5 + Math.random()*90) + '%';
+      b.style.background = colors[i % colors.length];
+      b.style.animationDuration = (6 + Math.random()*6) + 's';
+      b.style.animationDelay = (Math.random()*2) + 's';
+      b.style.opacity = 0.98;
+      b.style.bottom = (-120 - Math.random()*80) + 'px';
+      stage.appendChild(b);
+    }
+
+    // simple confetti burst
+    function burstConfetti(count=40){
+      const container = document.getElementById('confetti');
+      const colorsC = ['#ff6b6b','#ffd93d','#6bcB77','#4d96ff','#c56bff','#ff8fb1','#ffd2a6'];
+      for(let i=0;i<count;i++){
+        const piece = document.createElement('div');
+        piece.className = 'piece';
+        piece.style.background = colorsC[i % colorsC.length];
+        const left = Math.random()*100;
+        piece.style.left = left + '%';
+        piece.style.top = Math.random()*20 + 'px';
+        const w = 6 + Math.random()*12;
+        piece.style.width = w + 'px';
+        piece.style.height = (w + Math.random()*8) + 'px';
+        piece.style.transform = 'rotate(' + Math.random()*360 + 'deg)';
+        piece.style.animationDuration = (1.6 + Math.random()*1.6) + 's';
+        piece.style.opacity = 0.95;
+        container.appendChild(piece);
+        // remove after animation
+        setTimeout(()=> container.removeChild(piece), 3500);
+      }
+    }
+
+    // trigger confetti on load, and every 6s
+    burstConfetti(36);
+    setInterval(()=> burstConfetti(20), 6000);
+
+    // Accessibility: announce greeting to screen readers
+    const live = document.createElement('div');
+    live.setAttribute('aria-live','polite');
+    live.style.position='absolute';
+    live.style.left='-9999px';
+    live.textContent = 'Happy Birthday Saniyaney! Wishing you a wonderful day.';
+    document.body.appendChild(live);
+  </script>
+</body>
+</html>
